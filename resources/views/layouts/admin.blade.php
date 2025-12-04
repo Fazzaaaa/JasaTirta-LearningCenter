@@ -15,8 +15,36 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     @stack('styles')
+    
+    <style>
+        /* Prevent initial flash */
+        body { visibility: hidden; }
+        body.loaded { visibility: visible; }
+    </style>
+    
+    <script>
+        // Apply saved sidebar state immediately to prevent layout shift
+        (function() {
+            const savedState = localStorage.getItem('desktopSidebarOpen');
+            if (savedState === 'false') {
+                document.documentElement.style.setProperty('--sidebar-width', '5rem');
+            }
+        })();
+        
+        // Show body once loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+        });
+    </script>
 </head>
-<body class="antialiased bg-gray-50" x-data="{ sidebarOpen: false, desktopSidebarOpen: true, profileOpen: false }">
+<body class="antialiased bg-gray-50" 
+    x-data="{ 
+        sidebarOpen: false, 
+        desktopSidebarOpen: localStorage.getItem('desktopSidebarOpen') !== 'false', 
+        profileOpen: false 
+    }"
+    x-init="$watch('desktopSidebarOpen', value => localStorage.setItem('desktopSidebarOpen', value))"
+>
     <x-loader />
     
     <div class="min-h-screen">
@@ -46,6 +74,22 @@
     </div>
 
     <script>
+        // Auto scroll sidebar to active menu
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.querySelector('.sidebar-scroll');
+            const activeLink = sidebar?.querySelector('.bg-blue-50');
+            
+            if (sidebar && activeLink) {
+                // Scroll active menu into view with smooth behavior
+                setTimeout(() => {
+                    activeLink.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                }, 100);
+            }
+        });
+
         document.addEventListener('alpine:init', () => {
             Alpine.data('notificationsManager', () => ({
                 notifications: [],

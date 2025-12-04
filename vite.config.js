@@ -4,10 +4,10 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     server: {
-        host: '10.10.16.73',
+        host: 'localhost',
         port: 5173,
         hmr: {
-            host: '10.10.16.73',
+            host: 'localhost',
             port: 5173,
         },
         cors: true,

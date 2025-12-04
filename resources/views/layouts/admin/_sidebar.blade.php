@@ -1,6 +1,6 @@
 {{-- Admin Sidebar --}}
 <aside 
-    class="fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-white border-r border-gray-200"
+    class="fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-white border-r border-gray-200 flex flex-col"
     :class="[
         sidebarOpen ? 'translate-x-0' : '-translate-x-full',
         'lg:translate-x-0',
@@ -9,7 +9,7 @@
     ]"
 >
     {{-- Sidebar Header --}}
-    <div class="flex items-center justify-between h-20 px-5 border-b border-gray-200">
+    <div class="flex items-center justify-between h-20 px-5 border-b border-gray-200 shrink-0">
         <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3" x-show="desktopSidebarOpen || !window.matchMedia('(min-width: 1024px)').matches">
             <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,7 +40,7 @@
     </div>
 
     {{-- Navigation --}}
-    <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+    <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto sidebar-scroll">
         {{-- Dashboard --}}
         <a href="{{ route('admin.dashboard') }}" 
            class="flex items-center gap-4 px-4 py-3.5 text-base font-medium rounded-lg transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
@@ -143,10 +143,11 @@
     </nav>
 
     {{-- Desktop Toggle Button --}}
-    <div class="hidden lg:block absolute bottom-0 left-0 right-0 p-5 border-t border-gray-200">
+    <div class="hidden lg:block shrink-0 p-5 border-t border-gray-200 bg-white">
         <button 
             @click="desktopSidebarOpen = !desktopSidebarOpen"
             class="flex items-center justify-center w-full px-4 py-3 text-base font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+            :title="desktopSidebarOpen ? 'Ciutkan sidebar' : 'Perluas sidebar'"
         >
             <svg class="w-5 h-5 transition-transform" :class="desktopSidebarOpen ? '' : 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
